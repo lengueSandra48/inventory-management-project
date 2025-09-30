@@ -1,0 +1,80 @@
+<div class="dashboard-overview">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <i class="fas fa-spinner fa-spin"></i> Chargement des données...
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid" *ngIf="!isLoading && !errorMessage">
+    <div class="kpi-card">
+      <div class="kpi-content">
+        <h3>{{ totalProducts }}</h3>
+        <p>Produits</p>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-content">
+        <h3>{{ totalClients }}</h3>
+        <p>Clients</p>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-content">
+        <h3>{{ totalSuppliers }}</h3>
+        <p>Fournisseurs</p>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-content">
+        <h3>{{ totalOrders }}</h3>
+        <p>Commandes</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Dashboard Content -->
+  <div class="dashboard-content">
+    <!-- Quick Actions -->
+    <div class="quick-actions-section">
+      <h3>Actions Rapides</h3>
+      <div class="quick-actions-grid">
+        <div class="action-card" routerLink="/nouvelarticle">
+          <span>Ajouter Produit</span>
+        </div>
+        <div class="action-card" routerLink="/nouveauclient">
+          <span>Nouveau Client</span>
+        </div>
+        <div class="action-card" routerLink="/nouvellecommandeclt">
+          <span>Nouvelle Commande</span>
+        </div>
+        <div class="action-card" routerLink="/mvtstk">
+          <span>Mouvement Stock</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="activities-section">
+      <h3>Activités Récentes</h3>
+      <div class="activity-list">
+        <div class="activity-item" *ngFor="let activity of recentActivities.slice(0, 4)">
+          <div class="activity-content">
+            <h4>{{ activity.action }}</h4>
+            <p>{{ activity.item }}</p>
+          </div>
+          <div class="activity-time">
+            <span>{{ activity.time }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

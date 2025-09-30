@@ -1,0 +1,87 @@
+<div class="col m-3">
+  <div class="col-md-12 mb-3 mt-3">
+    <label for="image-upload" class="form-label">Photo du {{ origin }} (optionnelle)</label>
+    <input type="file" id="image-upload" class="form-control mb-2" accept="image/*" (change)="onImageSelected($event)">
+    <img [src]="imagePreview || 'product.png'" alt="Aperçu du {{ origin }}" class="rounded-circle" width="200px">
+  </div>
+  <br>
+  <div class="col-md-12 mb-3">
+    <div class="col-md-12 mb-3">
+      <h2><i class="fas fa-info-circle blue-color"></i>&nbsp;{{ getPageTitle() }}</h2>
+    </div>
+    <div class="col-md-12">
+        <div class="alert alert-danger" *ngIf="errorMsg.length > 0">
+          <div *ngFor="let msg of errorMsg">
+            <span>{{msg}}</span>
+          </div>
+        </div>
+
+      <form>
+        <div class="row mb-3">
+          <div class="col">
+            <label for="nom" class="form-label">Nom</label>
+            <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom" [(ngModel)]="clientFournisseur.nom">
+          </div>
+          <div class="col">
+            <label for="prenom" class="form-label">Prénom</label>
+            <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Prénom" [(ngModel)]="clientFournisseur.prenom">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <label for="email" class="form-label">E-mail</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="E-mail" [(ngModel)]="clientFournisseur.email">
+          </div>
+          <div class="col">
+            <label for="numtel" class="form-label">Téléphone</label>
+            <input type="text" class="form-control" id="numtel" name="numtel" placeholder="Téléphone" [(ngModel)]="clientFournisseur.numTel">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <label for="adresse1" class="form-label">Adresse 1</label>
+            <input type="text" class="form-control" id="adresse1" name="adresse1" placeholder="Adresse 1" [(ngModel)]="clientFournisseur.adresse.adresse1">
+          </div>
+          <div class="col">
+            <label for="adresse2" class="form-label">Adresse 2</label>
+            <input type="text" class="form-control" id="adresse2" name="adresse2" placeholder="Adresse 2" [(ngModel)]="clientFournisseur.adresse.adresse2">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <label for="ville" class="form-label">Ville</label>
+            <input type="text" class="form-control" id="ville" name="ville" placeholder="Ville" [(ngModel)]="clientFournisseur.adresse.ville">
+          </div>
+          <div class="col">
+            <label for="codepostale" class="form-label">Code postal</label>
+            <input type="text" class="form-control" id="codepostale" name="codepostale" placeholder="Code postal" [(ngModel)]="clientFournisseur.adresse.codePostal">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <label for="pays" class="form-label">Pays</label>
+            <input type="text" class="form-control" id="pays" name="pays" placeholder="Pays" [(ngModel)]="clientFournisseur.adresse.pays">
+          </div>
+          <div class="col">
+            <label for="entreprise" class="form-label">Entreprise</label>
+            <select id="entreprise" class="form-control" name="entreprise" aria-label="Sélectionner une entreprise" [(ngModel)]="selectedEntreprise" (ngModelChange)="onEntrepriseChange()">
+              <option value="" disabled>Sélectionner une entreprise</option>
+              <option *ngFor="let entreprise of listeEntreprises" [ngValue]="entreprise">{{entreprise.nomEntreprise}}</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-12 text-end">
+    <button class="btn btn-danger me-3" (click)="cancelClick()">
+      <i class="fas fa-ban"></i>&nbsp;
+      Annuler
+    </button>
+    <button class="btn btn-primary" (click)="enregistrer()">
+      <i class="fas fa-save"></i>&nbsp;
+      Enregistrer
+    </button>
+  </div>
+</div>
+

@@ -1,0 +1,71 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1 class="page-title">Détails du Rôle</h1>
+    <div class="header-actions">
+      <button class="btn btn-secondary" (click)="retourALaListe()">
+        <i class="fas fa-arrow-left"></i> Retour à la liste
+      </button>
+      <button class="btn btn-primary" (click)="modifier()">
+        <i class="fas fa-edit"></i> Modifier
+      </button>
+    </div>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="errorMsg">
+    <i class="fas fa-exclamation-triangle"></i>
+    {{ errorMsg }}
+  </div>
+
+  <div class="loading-spinner" *ngIf="isLoading">
+    <i class="fas fa-spinner fa-spin"></i>
+    Chargement des détails du rôle...
+  </div>
+
+  <div class="detail-card" *ngIf="!isLoading && role">
+    <div class="card-header">
+      <h3 class="card-title">
+        <i class="fas fa-user-tag"></i>
+        Informations du Rôle
+      </h3>
+    </div>
+    
+    <div class="card-body">
+      <div class="detail-grid">
+        <div class="detail-section">
+          <h4 class="section-title">Informations générales</h4>
+          <div class="detail-row">
+            <span class="detail-label">ID :</span>
+            <span class="detail-value">{{ role.id }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Nom du rôle :</span>
+            <span class="detail-value">{{ role.roleName }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Utilisateur :</span>
+            <span class="detail-value">
+              <span *ngIf="role?.utilisateurNom && role?.utilisateurPrenom">
+                {{ role.utilisateurNom }} {{ role.utilisateurPrenom }}
+              </span>
+              <span *ngIf="!role?.utilisateurNom || !role?.utilisateurPrenom">
+                Non défini
+              </span>
+            </span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">ID Entreprise :</span>
+            <span class="detail-value">{{ role.entrepriseId || 'Non défini' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <div class="action-buttons">
+        <button class="btn btn-danger" (click)="supprimer()">
+          <i class="fas fa-trash"></i> Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="container my-container">
+  <div class="card justify-content-md-center">
+    <div class="card-header text-center">
+      <h3>Se connecter</h3>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-danger" *ngIf = "errorMessage">
+        {{errorMessage}}
+      </div>
+      <div class="mb-3">
+        <input type="email" class="form-control"  placeholder="name@example.com" [(ngModel)]="authenticationRequest.email">
+      </div>
+      <div class="mb-3 password-container">
+        <input [type]="showPassword ? 'text' : 'password'" class="form-control"  placeholder="Password" [(ngModel)]="authenticationRequest.password">
+        <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
+          <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+        </button>
+      </div>
+      <div class="mb-3 d-flex justify-content-between">
+        <a [routerLink]="['/inscrire']" class="btn btn-link">S'inscrire</a>
+        <button type="button" class="btn btn-primary" (click)="login()">
+          <i class="fas fa-check"></i>&nbsp;
+          Se connecter
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+

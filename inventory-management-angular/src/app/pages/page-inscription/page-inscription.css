@@ -1,0 +1,166 @@
+/* Registration Page Container */
+.my-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  overflow-y: auto;
+  padding: 20px 0;
+}
+
+/* Registration Card */
+.card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  max-width: 500px;
+  width: 90%;
+  margin: auto;
+}
+
+.card-header {
+  background: transparent;
+  border: none;
+  padding: 30px 30px 20px;
+}
+
+.card-header h3 {
+  color: white;
+  font-weight: 600;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  background: white;
+  padding: 30px;
+}
+
+/* Form Inputs */
+.form-control {
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  padding: 12px 15px;
+  font-size: 14px;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+  background-color: white;
+  outline: none;
+}
+
+.form-control::placeholder {
+  color: #6c757d;
+  opacity: 0.8;
+}
+
+/* Textarea specific */
+textarea.form-control {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Alert Messages */
+.alert-danger {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  border-left: 4px solid #dc3545;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.alert-danger span {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.alert-danger span:last-child {
+  margin-bottom: 0;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 10px;
+  padding: 12px 25px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+}
+
+.btn-link {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.btn-link:hover {
+  color: #5a6fd8;
+  text-decoration: underline;
+}
+
+/* Button Container */
+.d-flex.justify-content-between {
+  align-items: center;
+  margin-top: 25px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .my-container {
+    padding: 10px;
+  }
+  
+  .card {
+    width: 95%;
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .card-header {
+    padding: 20px 20px 15px;
+  }
+  
+  .d-flex.justify-content-between {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+}
+
+@media (max-height: 700px) {
+  .my-container {
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+}

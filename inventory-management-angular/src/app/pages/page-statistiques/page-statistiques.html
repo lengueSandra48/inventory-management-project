@@ -1,0 +1,79 @@
+<div class="statistics-container">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <i class="fas fa-spinner fa-spin"></i> Chargement des statistiques...
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid" *ngIf="!isLoading && !errorMessage">
+    <div class="kpi-card">
+      <div class="kpi-content">
+        <h3>{{ formatCurrency(chiffreAffaires) }}</h3>
+        <p>Chiffre d'affaires</p>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-content">
+        <h3>{{ totalCommandes }}</h3>
+        <p>Commandes</p>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-content">
+        <h3>{{ articlesEnStock }}</h3>
+        <p>Articles en stock</p>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-content">
+        <h3>{{ alertesStock }}</h3>
+        <p>Alertes stock</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="stats-content">
+    <!-- Chart Section -->
+    <div class="chart-section">
+      <h3>Évolution des Ventes</h3>
+      <div class="chart-placeholder" *ngIf="!isLoading">
+        <div class="chart-bars">
+          <div class="bar" 
+               *ngFor="let value of ventesData; let i = index" 
+               [style.height.%]="getBarHeight(value)">
+          </div>
+        </div>
+        <div class="chart-labels">
+          <span *ngFor="let label of ventesLabels">{{ label }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Performance -->
+    <div class="category-section">
+      <h3>Performance par Catégorie</h3>
+      <div class="category-list" *ngIf="!isLoading">
+        <div class="category-item" *ngFor="let category of categories">
+          <span class="category-name">{{ category.name }}</span>
+          <div class="category-bar">
+            <div class="category-progress" [style.width.%]="category.percentage"></div>
+          </div>
+          <span class="category-value">{{ category.count }} articles</span>
+        </div>
+        
+        <div *ngIf="categories.length === 0" class="no-data">
+          Aucune catégorie trouvée
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

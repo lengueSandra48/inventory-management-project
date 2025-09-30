@@ -1,0 +1,39 @@
+<div class="ligne-commande-item">
+  <div class="ligne-header">
+    <h5 class="article-title">{{ ligneCommande.article?.designation || 'Article non défini' }}</h5>
+    <button class="btn-delete-ligne" (click)="supprimerLigne()" title="Supprimer cette ligne">
+      <i class="fas fa-trash"></i>
+    </button>
+  </div>
+  
+  <div class="ligne-details">
+    <div class="detail-item">
+      <label class="detail-label">Code Article:</label>
+      <span class="detail-value">{{ ligneCommande.article?.codeArticle || 'N/A' }}</span>
+    </div>
+    
+    <div class="detail-item">
+      <label class="detail-label">Quantité:</label>
+      <span class="detail-value">{{ ligneCommande.quantite }}</span>
+    </div>
+    
+    <div class="detail-item">
+      <label class="detail-label">Prix Unitaire:</label>
+      <span class="detail-value">{{ ligneCommande.prixUnitaire | currency:'EUR':'symbol':'1.2-2' }}</span>
+    </div>
+    
+    <div class="detail-item total-item">
+      <label class="detail-label">Total:</label>
+      <span class="detail-value total-value">
+        {{ (ligneCommande.prixUnitaire && ligneCommande.quantite ? +ligneCommande.prixUnitaire * +ligneCommande.quantite : 0) | currency:'EUR':'symbol':'1.2-2' }}
+      </span>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+

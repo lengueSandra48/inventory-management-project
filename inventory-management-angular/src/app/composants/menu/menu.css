@@ -1,0 +1,128 @@
+/* Menu Styling */
+.accordion {
+  background: transparent;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card {
+  background: transparent !important;
+  border: none !important;
+}
+
+.card-header {
+  background: transparent !important;
+  border: none !important;
+  padding: 0;
+  margin-bottom: 8px;
+}
+
+.btn-link {
+  color: #ffffff !important;
+  text-decoration: none !important;
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 12px 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 100%;
+  text-align: left;
+  letter-spacing: 0.5px;
+}
+
+.btn-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff !important;
+  transform: translateX(5px);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-link:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+  color: #ffffff !important;
+}
+
+.btn-link i {
+  margin-right: 10px;
+  width: 18px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+/* Submenu Styling */
+.list-group {
+  background: transparent;
+  margin-top: 5px;
+  margin-left: 15px;
+}
+
+.list-group-item {
+  background: transparent !important;
+  border: none !important;
+  padding: 8px 15px;
+  margin-bottom: 3px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  transform: translateX(3px);
+}
+
+.list-group-item.text-white.bg-primary {
+  background: rgba(255, 255, 255, 0.25) !important;
+  border-left: 3px solid #ffffff;
+}
+
+.list-group-item a {
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 400;
+  display: block;
+  width: 100%;
+}
+
+.list-group-item a:hover {
+  color: #ffffff !important;
+}
+
+.list-group-item a i {
+  margin-right: 8px;
+  width: 16px;
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+/* Collapse Animation */
+.collapse {
+  transition: all 0.3s ease-in-out;
+}
+
+
+/* Active State */
+.list-group-item.text-white.bg-primary a {
+  color: #ffffff !important;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .btn-link {
+    font-size: 0.9rem;
+    padding: 10px 12px;
+  }
+  
+  .list-group-item {
+    padding: 6px 12px;
+  }
+  
+  .list-group-item a {
+    font-size: 0.85rem;
+  }
+}

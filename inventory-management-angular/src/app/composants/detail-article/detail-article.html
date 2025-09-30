@@ -1,0 +1,80 @@
+<div class="row mb-1 m-1 custom-border">
+  <div class="col-md-1 custom-border-right p-1 text-center mb-1 mt-1">
+      <img src="product.png" alt="ma" width="100px">
+  </div>
+  <div class="col-md-5 custom-border-right mb-1 mt-1">
+    <div class="col">
+      <div class="row">
+        <div class="col-md-1"><i class="fas fa-info-circle blue-color"></i> </div>
+        <div class="col-11"> Code article: {{ articleResponseDto.codeArticle }}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"><i class="fas fa-info-circle blue-color"></i> </div>
+        <div class="col-md-11">Designation: {{ articleResponseDto.designation }}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"><i class="fas fa-dollar-sign blue-color"></i> </div>
+        <div class="col-md-11">Prix unit HT: {{ articleResponseDto.prixUnitaire }}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"><i class="fas fa-dollar-sign blue-color"></i> </div>
+        <div class="col-md-11">Prix unit TTC: {{ articleResponseDto.prixUnitaireTtc}}</div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-md-3 custom-border-right mb-1 mt-1">
+    <div class="row">
+      <div class="col-md-2">
+        <i class="fas fa-flag-checkered blue-color"></i>
+      </div>
+      <div class="col-md-10">
+        <div class="row">
+          <div class="col-md-12">Code catégorie: {{ articleResponseDto.categorie?.code }} </div>
+          <div class="col-md-12">Designation: {{ articleResponseDto.categorie?.designation }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-md-3 mb-1 mt-1">
+    <div class="row">
+      <div class="col-md-4">
+        <button type="button" class="btn btn-link" (click)="modifierArticle()">
+          <i class="fas fa-pencil-alt"></i>&nbsp;Modifier</button>
+      </div>
+      <div class="col-md-4">
+        <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" [attr.data-bs-target]="'#modalDelete' + articleResponseDto.id"  >
+          <i class="fas fa-trash-alt"></i>&nbsp;Supprimer</button>
+      </div>
+      <div class="col-md-4">
+        <button type="button" class="btn btn-link">
+          <i class="fas fa-list-alt"></i>&nbsp;Detail</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalDelete{{articleResponseDto.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Confirmation</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Etes vous sur de vouloir supprimer cet Article?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+            <i class="fas fa-ban"></i>&nbsp;Annuler</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmerEtSupprimerArticle()">
+            <i class="fas fa-trash-alt"></i>&nbsp;Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+

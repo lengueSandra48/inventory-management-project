@@ -1,0 +1,100 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1 class="page-title">Détails de l'Entreprise</h1>
+    <div class="header-actions">
+      <button class="btn btn-secondary" (click)="retourALaListe()">
+        <i class="fas fa-arrow-left"></i> Retour à la liste
+      </button>
+      <button class="btn btn-primary" (click)="modifier()">
+        <i class="fas fa-edit"></i> Modifier
+      </button>
+    </div>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="errorMsg">
+    <i class="fas fa-exclamation-triangle"></i>
+    {{ errorMsg }}
+  </div>
+
+  <div class="loading-spinner" *ngIf="isLoading">
+    <i class="fas fa-spinner fa-spin"></i>
+    Chargement des détails de l'entreprise...
+  </div>
+
+  <div class="detail-card" *ngIf="!isLoading && entreprise">
+    <div class="card-header">
+      <h3 class="card-title">
+        <i class="fas fa-building"></i>
+        Informations de l'Entreprise
+      </h3>
+    </div>
+    
+    <div class="card-body">
+      <div class="detail-grid">
+        <div class="detail-section">
+          <h4 class="section-title">Informations générales</h4>
+          <div class="detail-row">
+            <span class="detail-label">ID :</span>
+            <span class="detail-value">{{ entreprise.id }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Nom :</span>
+            <span class="detail-value">{{ entreprise.nomEntreprise }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Description :</span>
+            <span class="detail-value">{{ entreprise.description || '-' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Email :</span>
+            <span class="detail-value">{{ entreprise.email || '-' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Téléphone :</span>
+            <span class="detail-value">{{ entreprise.numTel || '-' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Site web :</span>
+            <span class="detail-value">{{ entreprise.steWeb || '-' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Code fiscal :</span>
+            <span class="detail-value">{{ entreprise.codeFiscal || '-' }}</span>
+          </div>
+        </div>
+
+        <div class="detail-section" *ngIf="entreprise.adresse">
+          <h4 class="section-title">Adresse</h4>
+          <div class="detail-row">
+            <span class="detail-label">Adresse 1 :</span>
+            <span class="detail-value">{{ entreprise.adresse.adresse1 || '-' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Adresse 2 :</span>
+            <span class="detail-value">{{ entreprise.adresse.adresse2 || '-' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Ville :</span>
+            <span class="detail-value">{{ entreprise.adresse.ville || '-' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Code postal :</span>
+            <span class="detail-value">{{ entreprise.adresse.codePostal || '-' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Pays :</span>
+            <span class="detail-value">{{ entreprise.adresse.pays || '-' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <div class="action-buttons">
+        <button class="btn btn-danger" (click)="supprimer()">
+          <i class="fas fa-trash"></i> Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

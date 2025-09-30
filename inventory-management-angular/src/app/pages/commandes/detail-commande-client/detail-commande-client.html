@@ -1,0 +1,120 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1 class="page-title">Détails de la Commande Client</h1>
+    <div class="header-actions">
+      <button class="btn btn-secondary" (click)="retourListe()">
+        <i class="fas fa-arrow-left"></i>
+        Retour à la liste
+      </button>
+      <button class="btn btn-primary" (click)="modifierCommande()">
+        <i class="fas fa-edit"></i>
+        Modifier
+      </button>
+    </div>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="errorMsg">
+    <i class="fas fa-exclamation-triangle"></i>
+    {{ errorMsg }}
+  </div>
+
+  <div class="loading-spinner" *ngIf="loading">
+    <i class="fas fa-spinner fa-spin"></i>
+    Chargement...
+  </div>
+
+  <div class="detail-card" *ngIf="!loading && commande.id">
+    <div class="card-header">
+      <h3 class="card-title">
+        <i class="fas fa-shopping-cart"></i>
+        Informations de la Commande
+      </h3>
+    </div>
+    
+    <div class="card-body">
+      <div class="detail-grid">
+        <div class="detail-section">
+          <h4 class="section-title">Informations générales</h4>
+          <div class="detail-row">
+            <span class="detail-label">Code commande:</span>
+            <span class="detail-value">{{ commande.code || 'Non trouvé' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Date commande:</span>
+            <span class="detail-value">{{ commande.dateCommande ? (commande.dateCommande | date:'dd/MM/yyyy') : 'Non trouvé' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">État:</span>
+            <span class="detail-value">
+              <span class="badge badge-success">EN_PREPARATION</span>
+            </span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Nombre d'articles:</span>
+            <span class="detail-value">{{ getNbArticles() }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Total commande:</span>
+            <span class="detail-value total-amount">{{ getTotalCommande() | currency:'EUR':'symbol':'1.2-2' }}</span>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h4 class="section-title">Informations client</h4>
+          <div class="detail-row">
+            <span class="detail-label">Nom:</span>
+            <span class="detail-value">{{ clientInfo?.nom || 'Non trouvé' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Prénom:</span>
+            <span class="detail-value">{{ clientInfo?.prenom || 'Non trouvé' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Email:</span>
+            <span class="detail-value">{{ clientInfo?.email || 'Non trouvé' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Téléphone:</span>
+            <span class="detail-value">{{ clientInfo?.numTel || clientInfo?.telephone || 'Non trouvé' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lignes de commande -->
+      <div class="lignes-section" *ngIf="commande.ligneCommandeClients && commande.ligneCommandeClients.length > 0">
+        <h4 class="section-title">Articles commandés</h4>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Article</th>
+                <th>Code</th>
+                <th>Quantité</th>
+                <th>Prix unitaire</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ligne of commande.ligneCommandeClients" class="table-row">
+                <td>{{ ligne.article?.designation || 'N/A' }}</td>
+                <td>{{ ligne.article?.codeArticle || 'N/A' }}</td>
+                <td>{{ ligne.quantite || 0 }}</td>
+                <td>{{ ligne.prixUnitaire | currency:'EUR':'symbol':'1.2-2' }}</td>
+                <td>{{ (ligne.quantite || 0) * (ligne.prixUnitaire || 0) | currency:'EUR':'symbol':'1.2-2' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <div class="action-buttons">
+        <button class="btn btn-danger" (click)="supprimerCommande()">
+          <i class="fas fa-trash"></i>
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

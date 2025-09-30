@@ -1,0 +1,34 @@
+<div class="modal-overlay" *ngIf="isVisible" (click)="onOverlayClick($event)">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h4 class="modal-title">
+        <i class="fas fa-exclamation-triangle warning-icon"></i>
+        Confirmation de suppression
+      </h4>
+      <button type="button" class="close-btn" (click)="onCancel()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <p class="confirmation-text">
+        {{ message || 'Êtes-vous sûr de vouloir supprimer cet élément ?' }}
+      </p>
+      <p class="warning-text">
+        <i class="fas fa-info-circle"></i>
+        Cette action est irréversible.
+      </p>
+    </div>
+    
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">
+        <i class="fas fa-times"></i>
+        Annuler
+      </button>
+      <button type="button" class="btn btn-danger" (click)="onConfirm()">
+        <i class="fas fa-trash"></i>
+        Supprimer
+      </button>
+    </div>
+  </div>
+</div>

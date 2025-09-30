@@ -1,0 +1,25 @@
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Liste des Entreprises</h1>
+        <app-boutton-action (clickEvent)="nouvelleEntreprise()"></app-boutton-action>
+    </div>
+
+      <app-data-table
+        [columns]="columns"
+        [data]="listeEntreprises"
+        [actions]="actions"
+        [isLoading]="isLoading"
+        [itemsPerPage]="10"
+        [showPagination]="true"
+        (actionClick)="onActionClick($event)"
+        (sortChange)="onSortChange($event)">
+      </app-data-table>
+</div>
+  
+
+<app-modal-confirmation 
+  [isVisible]="showDeleteModal"
+  [message]="getDeleteMessage()"
+  (confirmed)="confirmerSuppression()"
+  (cancelled)="fermerModal()">
+</app-modal-confirmation>

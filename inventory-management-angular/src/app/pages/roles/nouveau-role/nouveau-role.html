@@ -1,0 +1,100 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1 class="page-title">{{ getPageTitle() }}</h1>
+  </div>
+  
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    {{errorMessage}}
+  </div>
+  <div class="alert alert-success" *ngIf="successMessage">
+    {{successMessage}}
+  </div>
+  
+  <div class="text-center" *ngIf="isLoading">
+    <i class="fas fa-spinner fa-spin"></i> Chargement...
+  </div>
+
+  <div class="form-container" *ngIf="!isLoading">
+    <div class="form-section">
+      <div class="section-header">
+        <h2><i class="fas fa-user-tag blue-color"></i>&nbsp;Information du rôle</h2>
+      </div>
+      <div class="section-content">
+        <div class="form-section">
+          <div class="section-content">
+            <div class="form-group">
+              <label for="roleName">Nom du rôle *</label>
+              <input
+                type="text"
+                id="roleName"
+                name="roleName"
+                [(ngModel)]="role.roleName"
+                class="form-control"
+                placeholder="Entrez le nom du rôle"
+                required
+                minlength="2"
+                #roleNameInput="ngModel"
+              />
+              <div class="error-message" *ngIf="roleNameInput.invalid && roleNameInput.touched">
+                <small *ngIf="roleNameInput.errors?.['required']">Le nom du rôle est requis</small>
+                <small *ngIf="roleNameInput.errors?.['minlength']">Le nom du rôle doit contenir au moins 2 caractères</small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="utilisateurId">Utilisateur *</label>
+              <select
+                id="utilisateurId"
+                name="utilisateurId"
+                [(ngModel)]="role.utilisateurId"
+                class="form-control"
+                required
+                #utilisateurSelect="ngModel"
+              >
+                <option value="">Sélectionnez un utilisateur</option>
+                <option *ngFor="let utilisateur of utilisateurs" [value]="utilisateur.id">
+                  {{utilisateur.nom}} {{utilisateur.prenom}} - {{utilisateur.email}}
+                </option>
+              </select>
+              <div class="error-message" *ngIf="utilisateurSelect.invalid && utilisateurSelect.touched">
+                <small *ngIf="utilisateurSelect.errors?.['required']">La sélection d'un utilisateur est requise</small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="entrepriseId">Entreprise *</label>
+              <select
+                id="entrepriseId"
+                name="entrepriseId"
+                [(ngModel)]="role.entrepriseId"
+                class="form-control"
+                required
+                #entrepriseSelect="ngModel"
+              >
+                <option value="">Sélectionnez une entreprise</option>
+                <option *ngFor="let entreprise of entreprises" [value]="entreprise.id">
+                  {{entreprise.nomEntreprise}}
+                </option>
+              </select>
+              <div class="error-message" *ngIf="entrepriseSelect.invalid && entrepriseSelect.touched">
+                <small *ngIf="entrepriseSelect.errors?.['required']">La sélection d'une entreprise est requise</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-actions">
+      <button class="btn btn-danger me-3" (click)="cancel()" [disabled]="isLoading">
+        <i class="fas fa-ban"></i>&nbsp;
+        Annuler
+      </button>
+      <button class="btn btn-primary" (click)="save()" [disabled]="isLoading">
+        <i class="fas fa-save" *ngIf="!isLoading"></i>
+        <i class="fas fa-spinner fa-spin" *ngIf="isLoading"></i>&nbsp;
+        {{isLoading ? 'Enregistrement...' : 'Enregistrer'}}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,78 @@
+<div class="row mb-1 m-1 custom-border">
+  <div class="col-md-1 custom-border-right p-1 text-center mb-1 mt-1">
+    <img src="product.png" alt="ma" width="100px">
+  </div>
+  <div class="col-md-5 custom-border-right mb-1 mt-1">
+    <div class="col">
+      <div class="row">
+        <div class="col-md-1"><i class="fas fa-info-circle blue-color"></i> </div>
+        <div class="col-11">Nom: {{clientFournisseur.nom}}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"><i class="fas fa-info-circle blue-color"></i> </div>
+        <div class="col-md-11">Prenom: {{clientFournisseur.prenom}}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"><i class="fas fa-phone-alt blue-color"></i> </div>
+        <div class="col-md-11">Tel: {{clientFournisseur.numTel}} </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-md-3 custom-border-right mb-1 mt-1">
+    <div class="row">
+      <div class="row">
+        <div class="col-md-1"><i class="fas fa-home-alt blue-color"></i> </div>
+        <div class="col-11">{{clientFournisseur.adresse?.adresse1}}&nbsp;{{clientFournisseur.adresse?.adresse2}}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"><i class="fas fa-map-marked-alt blue-color"></i> </div>
+        <div class="col-md-11">Bp: {{clientFournisseur.adresse?.codePostal}}&nbsp;{{clientFournisseur.adresse?.ville}}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"><i class="fas fa-globe-europe blue-color"></i> </div>
+        <div class="col-md-11">pays: {{clientFournisseur.adresse?.ville}}</div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-md-3 mb-1 mt-1">
+    <div class="row">
+      <div class="col-md-4">
+        <button type="button" class="btn btn-link">
+          <i class="fas fa-pencil-alt"></i>&nbsp;Modifier</button>
+      </div>
+      <div class="col-md-4">
+        <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" [attr.data-bs-target]="'#modalDeleteArticle' + clientFournisseur.id">
+          <i class="fas fa-trash-alt"></i>&nbsp;Supprimer</button>
+      </div>
+      <div class="col-md-4">
+        <button type="button" class="btn btn-link">
+          <i class="fas fa-list-alt"></i>&nbsp;Detail</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalDeleteArticle{{clientFournisseur.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Confirmation</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Etes vous sur de vouloir supprimer ce {{origin}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+            <i class="fas fa-ban"></i>&nbsp;Annuler</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmerEtSupprimer()">
+            <i class="fas fa-trash-alt"></i>&nbsp;Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

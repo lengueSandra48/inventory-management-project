@@ -1,0 +1,113 @@
+<div class="data-table-container">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Chargement des données...</p>
+  </div>
+
+  <!-- Data Table -->
+  <div *ngIf="!isLoading" class="table-wrapper">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th 
+            *ngFor="let column of columns" 
+            [class.sortable]="column.sortable"
+            (click)="column.sortable && onSort(column)"
+            (keydown.enter)="column.sortable && onSort(column)"
+            [attr.tabindex]="column.sortable ? '0' : null">
+            {{ column.label }}
+            <i *ngIf="column.sortable && sortColumn === column.key" 
+               [class]="sortDirection === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'">
+            </i>
+          </th>
+          <th *ngIf="actions.length > 0" class="actions-header">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of paginatedData" class="table-row">
+          <td *ngFor="let column of columns">
+            <!-- Text Column -->
+            <span *ngIf="column.type === 'text' || !column.type">
+              {{ getCellValue(item, column) || 'N/A' }}
+            </span>
+            
+            <!-- Date Column -->
+            <span *ngIf="column.type === 'date'">
+              {{ getCellValue(item, column) | date:'dd/MM/yyyy' }}
+            </span>
+            
+            <!-- Badge Column -->
+            <span *ngIf="column.type === 'badge'" 
+                  class="badge"
+                  [ngClass]="getBadgeConfig(column, getCellValue(item, column)).class">
+              {{ getBadgeConfig(column, getCellValue(item, column)).label || getCellValue(item, column) }}
+            </span>
+          </td>
+          
+          <!-- Actions Column -->
+          <td *ngIf="actions.length > 0" class="actions-cell">
+            <button *ngFor="let action of actions"
+                    class="btn-action"
+                    [ngClass]="action.class"
+                    [title]="action.tooltip"
+                    (click)="onActionClick(action, item)">
+              <i [class]="action.icon"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div *ngIf="showPagination && totalPages > 1" class="pagination-container">
+    <nav class="btn-group" aria-label="Pagination">
+      <button 
+        type="button" 
+        class="btn btn-light" 
+        [disabled]="currentPage === 1"
+        (click)="goToFirst()">
+        <i class="fas fa-angle-double-left"></i>
+      </button>
+      
+      <button 
+        type="button" 
+        class="btn btn-light" 
+        [disabled]="currentPage === 1"
+        (click)="goToPrevious()">
+        <i class="fas fa-angle-left"></i>
+      </button>
+
+      <button 
+        *ngFor="let page of pages" 
+        type="button" 
+        class="btn"
+        [class.btn-primary]="page === currentPage"
+        [class.btn-light]="page !== currentPage"
+        (click)="goToPage(page)">
+        {{ page }}
+      </button>
+
+      <button 
+        type="button" 
+        class="btn btn-light" 
+        [disabled]="currentPage === totalPages"
+        (click)="goToNext()">
+        <i class="fas fa-angle-right"></i>
+      </button>
+      
+      <button 
+        type="button" 
+        class="btn btn-light" 
+        [disabled]="currentPage === totalPages"
+        (click)="goToLast()">
+        <i class="fas fa-angle-double-right"></i>
+      </button>
+    </nav>
+
+    <div class="pagination-info">
+      Affichage {{ (currentPage - 1) * itemsPerPage + 1 }} à {{ Math.min(currentPage * itemsPerPage, data.length) }} sur {{ data.length }} éléments
+    </div>
+  </div>
+</div>

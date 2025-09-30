@@ -1,0 +1,49 @@
+<div class="pagination-container">
+  <nav class="btn-group" aria-label="Pagination navigation" *ngIf="totalPages > 1">
+    <button 
+      type="button" 
+      class="btn btn-light" 
+      [disabled]="currentPage === 1"
+      (click)="goToFirst()">
+      <i class="fas fa-angle-double-left"></i>
+    </button>
+    
+    <button 
+      type="button" 
+      class="btn btn-light" 
+      [disabled]="currentPage === 1"
+      (click)="goToPrevious()">
+      <i class="fas fa-angle-left"></i>
+    </button>
+
+    <button 
+      *ngFor="let page of pages" 
+      type="button" 
+      class="btn"
+      [class.btn-primary]="page === currentPage"
+      [class.btn-light]="page !== currentPage"
+      (click)="goToPage(page)">
+      {{ page }}
+    </button>
+
+    <button 
+      type="button" 
+      class="btn btn-light" 
+      [disabled]="currentPage === totalPages"
+      (click)="goToNext()">
+      <i class="fas fa-angle-right"></i>
+    </button>
+    
+    <button 
+      type="button" 
+      class="btn btn-light" 
+      [disabled]="currentPage === totalPages"
+      (click)="goToLast()">
+      <i class="fas fa-angle-double-right"></i>
+    </button>
+  </nav>
+
+  <div class="pagination-info" *ngIf="totalItems > 0">
+    Affichage {{ (currentPage - 1) * itemsPerPage + 1 }} à {{ Math.min(currentPage * itemsPerPage, totalItems) }} sur {{ totalItems }} éléments
+  </div>
+</div>

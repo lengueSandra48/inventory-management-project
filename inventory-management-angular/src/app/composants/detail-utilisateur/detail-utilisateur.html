@@ -1,0 +1,98 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1 class="page-title">Détails de l'Utilisateur</h1>
+    <div class="header-actions">
+      <button class="btn btn-secondary" (click)="retourALaListe()">
+        <i class="fas fa-arrow-left"></i> Retour
+      </button>
+    </div>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="errorMsg">
+    <i class="fas fa-exclamation-triangle"></i>
+    {{errorMsg}}
+  </div>
+
+  <div class="loading-spinner" *ngIf="isLoading">
+    <i class="fas fa-spinner fa-spin"></i>
+    Chargement des détails...
+  </div>
+
+  <div class="detail-card" *ngIf="utilisateur && !isLoading">
+    <div class="card-header">
+      <h2 class="card-title">
+        <i class="fas fa-user"></i>
+        {{utilisateur.nom}} {{utilisateur.prenom}}
+      </h2>
+    </div>
+
+    <div class="card-body">
+      <div class="detail-grid">
+        <div class="detail-section">
+          <h3 class="section-title">Informations personnelles</h3>
+          <div class="detail-row">
+            <span class="detail-label">Nom complet:</span>
+            <span class="detail-value">{{utilisateur.nom}} {{utilisateur.prenom}}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Email:</span>
+            <span class="detail-value">{{utilisateur.email}}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Date de naissance:</span>
+            <span class="detail-value">{{utilisateur.dateDeNaissance | date:'dd/MM/yyyy'}}</span>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3 class="section-title">Adresse</h3>
+          <div class="detail-row">
+            <span class="detail-label">Adresse 1:</span>
+            <span class="detail-value">{{utilisateur.adresse?.adresse1}}</span>
+          </div>
+          <div class="detail-row" *ngIf="utilisateur.adresse?.adresse2">
+            <span class="detail-label">Adresse 2:</span>
+            <span class="detail-value">{{utilisateur.adresse?.adresse2}}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Ville:</span>
+            <span class="detail-value">{{utilisateur.adresse?.ville}}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Code postal:</span>
+            <span class="detail-value">{{utilisateur.adresse?.codePostal}}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Pays:</span>
+            <span class="detail-value">{{utilisateur.adresse?.pays}}</span>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3 class="section-title">Système</h3>
+          <div class="detail-row">
+            <span class="detail-label">ID:</span>
+            <span class="detail-value">{{utilisateur.id}}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Entreprise:</span>
+            <span class="detail-value">{{utilisateur.entreprise?.nomEntreprise}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <div class="action-buttons">
+        <button class="btn btn-primary" (click)="modifier()">
+          <i class="fas fa-edit"></i> Modifier
+        </button>
+        <button class="btn btn-danger" (click)="supprimer()">
+          <i class="fas fa-trash"></i> Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

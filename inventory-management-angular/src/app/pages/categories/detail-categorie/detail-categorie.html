@@ -1,0 +1,61 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1 class="page-title">Détails de la catégorie</h1>
+    <div class="header-actions">
+      <button class="btn btn-secondary me-2" (click)="retour()">
+        <i class="fas fa-arrow-left"></i> Retour
+      </button>
+      <button class="btn btn-primary" (click)="modifier()">
+        <i class="fas fa-edit"></i> Modifier
+      </button>
+    </div>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    {{errorMessage}}
+  </div>
+
+  <div class="text-center" *ngIf="isLoading">
+    <i class="fas fa-spinner fa-spin"></i> Chargement...
+  </div>
+
+  <div class="detail-container" *ngIf="!isLoading && categorie.id">
+    <div class="card">
+      <div class="card-header">
+        <h3><i class="fas fa-tag"></i> Informations de la catégorie</h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="detail-field">
+              <span class="detail-label">ID:</span>
+              <span class="detail-value">{{categorie.id}}</span>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="detail-field">
+              <span class="detail-label">Code:</span>
+              <span class="detail-value">{{categorie.code}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="detail-field">
+              <span class="detail-label">Désignation:</span>
+              <span class="detail-value">{{categorie.designation}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="categorie.entrepriseId">
+          <div class="col-md-12">
+            <div class="detail-field">
+              <span class="detail-label">Entreprise ID:</span>
+              <span class="detail-value">{{categorie.entrepriseId}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

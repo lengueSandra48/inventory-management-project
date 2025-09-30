@@ -1,0 +1,103 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1 class="page-title">Détails du Client</h1>
+    <div class="header-actions">
+      <button class="btn btn-secondary" (click)="retourListe()">
+        <i class="fas fa-arrow-left"></i>
+        Retour à la liste
+      </button>
+      <button class="btn btn-primary" (click)="modifierClient()">
+        <i class="fas fa-edit"></i>
+        Modifier
+      </button>
+    </div>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="errorMsg">
+    <i class="fas fa-exclamation-triangle"></i>
+    {{ errorMsg }}
+  </div>
+
+  <div class="loading-spinner" *ngIf="loading">
+    <i class="fas fa-spinner fa-spin"></i>
+    Chargement...
+  </div>
+
+  <div class="detail-card" *ngIf="!loading && client.id">
+    <div class="card-header">
+      <h3 class="card-title">
+        <i class="fas fa-user"></i>
+        Informations du Client
+      </h3>
+    </div>
+    
+    <div class="card-body">
+      <div class="detail-grid">
+        <div class="detail-section">
+          <h4 class="section-title">Informations personnelles</h4>
+          <div class="detail-row">
+            <span class="detail-label">ID:</span>
+            <span class="detail-value">{{ client.id }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Nom:</span>
+            <span class="detail-value">{{ client.nom || 'N/A' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Prénom:</span>
+            <span class="detail-value">{{ client.prenom || 'N/A' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Email:</span>
+            <span class="detail-value">{{ client.email || 'N/A' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Téléphone:</span>
+            <span class="detail-value">{{ client.numTel || 'N/A' }}</span>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h4 class="section-title">Adresse</h4>
+          <div class="detail-row">
+            <span class="detail-label">Adresse 1:</span>
+            <span class="detail-value">{{ client.adresse?.adresse1 || 'N/A' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Adresse 2:</span>
+            <span class="detail-value">{{ client.adresse?.adresse2 || 'N/A' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Ville:</span>
+            <span class="detail-value">{{ client.adresse?.ville || 'N/A' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Code postal:</span>
+            <span class="detail-value">{{ client.adresse?.codePostal || 'N/A' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Pays:</span>
+            <span class="detail-value">{{ client.adresse?.pays || 'N/A' }}</span>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h4 class="section-title">Informations système</h4>
+          <div class="detail-row">
+            <span class="detail-label">ID Client:</span>
+            <span class="detail-value">{{ client.id || 'N/A' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <div class="action-buttons">
+        <button class="btn btn-danger" (click)="supprimerClient()">
+          <i class="fas fa-trash"></i>
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

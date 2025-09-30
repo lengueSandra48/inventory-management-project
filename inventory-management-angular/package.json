@@ -1,0 +1,59 @@
+{
+  "name": "gestiondestocks",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "start:local": "npm run gs-api && ng serve -- --proxyConfig=proxy.conf.json",
+    "gs-api": "npm run gs-api:create-dist && npm run gs-api:download && npm run gs-api:extract && npm run gs-api:openapi-generator-cli",
+    "gs-api:create-dist": "mkdir tools\\swagger\\dist && mkdir tools\\swagger\\src",
+    "gs-api:download": "copy D:\\Cours_pk48\\gestionStock\\inventory-management-backend\\target\\inventory-management-0.0.1-SNAPSHOT.jar .\\tools\\swagger\\dist && copy D:\\Cours_pk48\\gestionStock\\gestiondestocks-angular\\public\\swagger.json .\\tools\\swagger\\src",
+    "gs-api:extract": "node .\\tools\\swagger\\src\\swagger.json 0.0.1-SNAPSHOT",
+    "gs-api:openapi-generator-cli": "npx openapi-generator-cli generate -i tools/swagger/src/swagger.json -g typescript-angular -o src/gs-api/src --additional-properties=ngVersion=20.0.0"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "angular"
+        }
+      }
+    ]
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/common": "^20.2.0",
+    "@angular/compiler": "^20.2.0",
+    "@angular/core": "^20.2.0",
+    "@angular/forms": "^20.2.0",
+    "@angular/platform-browser": "^20.2.0",
+    "@angular/router": "^20.2.0",
+    "@fortawesome/fontawesome-free": "^7.0.0",
+    "bootstrap": "^5.3.7",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^20.2.0",
+    "@angular/cli": "^20.2.0",
+    "@angular/compiler-cli": "^20.2.0",
+    "@openapitools/openapi-generator-cli": "^2.23.0",
+    "@types/jasmine": "~5.1.0",
+    "jasmine-core": "~5.9.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "ng-packagr": "^20.2.0",
+    "ng-swagger-gen": "^2.3.1",
+    "typescript": "~5.9.2"
+  }
+}
