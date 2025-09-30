@@ -1,0 +1,598 @@
+Full web Application  - (live session #1)
+
+Concevoir et developer une app web(Gestion de stock)
+Developper le backend(spring boot)
+Developper le Frontend avec Angular(la version recente Angular 10)
+
+Dockeriser l'application(L'environnement)
+- Conteneur pour la BDD
+- Conteneur pour l'application Backend
+- Conteneur pour l'application Frontend
+
+AWS(Amazon Web Service) 
+    -Cloud: Lutilisateur n'auras pas besoin d'installer l'app pour l'utiliser(fb, ...)
+    -AWS Console Management
+    -Terraform pour IaC (Infrastructure as Code)
+
+
+Preparation de l'environnement de travail:
+	- Java 8 minimum
+	- Intellij, …
+	- MySQL (Xamp)
+
+La futur application: 
+	- Concevoir et developper une application de gestion de stock
+
+Cahier de charge de l'application:
+  	 L'application doit permettre à des entreprises ou clients de s'inscrire et gérer leurs articles, stock, clients,    	fournisseurs, commandes clients, commandes fournisseurs, … 
+
+Plan de travail : Roadmap
+Backend:
+	- Conception(UML: diagramme de classe)
+	- Creer un projet spring boot
+	- Configurer le projet
+	- Creer les entités (models), les services, ...
+	- Configurer swagger (Api Documentation)
+	-Generer le swagger.json => Generer les services, model pour l'application Front end.
+FrontEnd:
+	- Creer et expliquer le projet Angular
+	- Decouper l'application en components
+	- Creer les components
+	- Creer les services
+	- Developper les interfaces (les ecrants)
+DevOps
+	- Creer des images Docker (BDD, Backend [API], FrontEnd)
+	- Faire fonctionner l'application en dehors des IDE.
+
+
+1: Conception UML: Diagramme de classe
+	explication de commande: 
+	Num Commande: 0001   ; Date: 07/02/2021
+	[D'autres informations]
+	Client: Mr XXXXX
+	-------------------------------
+	Liste des articles à commander
+	-------------------------------
+	Art 123456 | 3  |10,00$| 30,00$
+	Art 456789 | 10 |2,00$ |20,00$
+	-------------------------------
+	Total de la commande: 50,00$
+	-CommandeFournisseur: Partie responsable des entrées des articles en stock
+	-CommandeClient: Partie responsable des sorties des articles en stock
+
+2: cahier de charge: On souhaite developer une application de gestion de stock pour repondre aux besoins de nos clients. Cette application permet de: 
+	- Creer des profils pour chaque entreprise
+	- Une entreprise a un ou plusieurs utilisateurs
+	- Parametrer les categories d'articles (produit)
+	- Une entreprise a un ou plusieurs articles (produits)
+	- Une entreprise a un ou plusieurs clients, fournisseurs, ...
+
+	- Passer des commandes clients
+		-Une commande client a un seul client
+		-Une commande client a un ou plusieurs articles (produits)
+		-Une commande client effectue une sortie de stock pour l'article en question
+	- Passer des commandes fournisseurs
+		-Une commande fournisseur a un seul fournisseur
+		-Une commande fournisseur a un ou plusieurs articles (produits)
+		-Une commande fournisseur effectue une sortie de stock pour les articles en question
+	- Effectuer des ventes au magazine
+		- Une vente a un ou plusieurs articles (produits)
+		- Une vente effectue une sortie de stock pour les articles en question
+	- Consulter l'etat du stock de chaque article
+		-Voir la quantité de stock de l'article en temps reel
+		-Effectuer des corrections de stock (mettre à jour le stock)
+
+  * L'application doit pouvoir envoyer automatiquement les emails aux fournisseurs lors de la creation d'une nouvenne     commande fournisseur en se basant sur un template pre-define
+
+  * Lapplication doit pouvoir envoyer un email de confirmation aux clients lors de la creation de la commande client en utilisant un template pre-define
+
+  * L'application doit afficher une notification lorsque un article (produit) atteint un seuil de stock (ex: produit < 5)
+
+  * L'application doit avoir un tableau de bord qui affiche les statistiques (à definer) => Les statistiques de vente, ...  
+
+  * L'application offre une console d'administration pour les entreprises pour gerer les utilisateurs, parametrage.
+
+  * L'application offre un historique des commandes d'un (client / fournisseur )
+
+  * L'application offre une fonctionnalité de recherche par module (client, articles, ...)
+
+  * L'application offre un état d'avancement des commandes(passé, en cours de livraison, ...)
+
+==> L'application doit être sécurisé avec un système d'authentification
+
+3: Création du projet dans spring initializr (start.spring.io); les dependances de base: 
+	- Spring web: Permet de créer l'API
+	- Spring Data JPA: Est responsable pour la partie communication avec la BDD
+	- Lombok: Bibliothèque pour simplifier le code juste à partir des annotations(ex: @Getter, ...) 
+	- Spring Boot DevTools: Charger à chaud les modiffications de l'application. 
+	- Spring Security:Gerer la securité et l'authentification par JWT  
+	- MySQL Driver: BDD à utiliser.
+
+4: Création du package model(ou entity): Il contient toutes les classes de notre diagramme de classe UML;
+	- Les classes UML sont des classes(ou Entité) java et pur cela, on les nome 	@Table(name = "tableName") et aussi preciser que ce sont des entité 	(@Entity)
+	- L'id est aussi l'identifiant de notre classe java qui est generalement 	Autoincrementés
+	- Les attributs sont les differentes variables que l'on crée dans nos 	classes. Ce sont les colonnes dans nos BDD et pour cela, il faut  	preciser: @Column(name = "nom_utilisateur")
+	- Les multiplicités sont introduites en fonction des differentes relations entre chaque classes: 
+	A-Lorsque la miltiplicité est de 1-->n (@OneToMany), on affiche une liste 	(Ex: @OneToMany(mappedBy = "categorie"):On mappedBy pour lier les classes
+   	private List<Article> articles;)
+	B-Lorsque la miltiplicité est de n-->1 (@ManyToOne), on affiche un seul 	element(Ex:  @ManyToOne @JoinColumn(name = "entreprise_id")
+    	private Entreprise entreprise;): On JoinColumn pour lier les classes.
+
+NB: L'attribut "entreprise_id" a ete ajouté dans toutes les classes/entités sauf Entreprise.java et Utilisateur.java pour faciliter la recherche des données.Notons que c'est un attribut purement technique:si on parle de conception UML, ce n'est pas 100% correct de le mettre mais si on parle pour simplifier l'implementation technique(simplifier les taches) ça sera correct. 
+    ""@Column(name = "entreprise_id")
+    private Integer entreprise_id;""
+
+5: Création du package dto(Data Transfert Object): C'est la couche qui permet la communication entre notre API et les clients externe tels que une application web. Chaque table(ou classe) à sa classe Dto correspondante: C'est une copie de l'entité mais avec les info qu'on veut bien afficher.Si dans la classe Client.java on a les attributs: """@Data
+@Builder
+    @Column(name = "nom")
+    private String nom;
+
+    @Column(name = "prenom")
+    private String prenom;
+
+    @Embedded //champ composé capable d'etre utilisé plusieurs fois dans les autres entités
+    private Adresse adresse;
+
+    @Column(name = "photo")
+    private String photo;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "numTel")
+    private String numTel;
+
+    @OneToMany(mappedBy = "client")
+    public List<CommandeClient> commandeClients;
+""" et qu'on aimerait lors de l'affichage afficher uniquement certains attributs, le contenu de la classe ClientDto.java sera: """@Data
+@Builder
+public class ClientDto {
+    private Integer id;
+    private String nom;
+    private String prenom;
+    private String photo;
+    private String numTel;
+    public List<CommandeClientDto> commandeClients;
+}"""  
+
+6: Création du package mapper : C'est le mapping de l'entité vers et dto et du dto vers l'entité. Par exemple dans l'entité CategorieDto.java(@Data
+@Builder
+public class CategorieDto {
+    private Integer id;
+    private String code;
+    private String designation;
+    private List<ArticleDto> articles;
+}: Ici, on va créer une methode qui va renvoyer un objet de type CategorieDto qu'on va l'appeler 'fromEntity et on passe Categorie en tanque paramètre. Cette phrase se traduit par: public CategorieDto fromEntity(Categorie categorie) {}. Cette methode devient alors: """@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class CategorieDto {
+    private Integer id;
+    private String code;
+    private String designation;
+
+    @JsonIgnore
+    private List<ArticleDto> articles;
+
+    /**
+     * Convertit une entité Categorie en CategorieDto
+     */
+    public CategorieDto fromEntity(Categorie categorie) {
+        if (categorie == null) {
+            return null;
+            //TODO throw an exception
+        }
+        return CategorieDto.builder()
+                .id(categorie.getId())
+                .code(categorie.getCode())
+                .designation(categorie.getDesignation())
+                .build();
+    }
+
+    /**
+     * Convertit un CategorieDto en entité Categorie
+     */
+    public Categorie toEntity(CategorieDto dto) {
+        if (dto == null) {
+            return null;
+            //TODO throw an exception
+        }
+        Categorie categorie = new Categorie();
+        categorie.setId(dto.getId());
+        categorie.setCode(dto.getCode());
+        categorie.setDesignation(dto.getDesignation());
+        // On ne mappe pas la liste d'articles ici volontairement
+        return categorie;
+    }
+}
+""" Pour construice ce mapper: 
+	A- De l'entité Categorie vers CategorieDto: -Poser la condition pour gerer 	les exceptions puis retourner les different attributs.
+	B- De CategorieDto vers l'entité Categorie: -Poser la condition pour gerer 	les exceptions ; -Definir une instance de 	Categorie etl'utiliser pour appeler les setters sur les attributs
+
+7: Création du package validator : Il permet la validation de chaque table(ou Entité) avant son enregidtrement dans la BDD, pour voir si chaque attribut que l'on veut afficher est presente. Ex: Pour creer une nouvelle categorie, on doit envoyer un objet de type 'CategorieDto' mais avant de persister ou d'enregistrer la categorie dans la BDD, il faut passer par une validation. Ainsi, le code de la categorie peut etre obligatoir mais pas la categorie donc il faut creer une classe pour chaque table pour valider les attributs que l'on souhaite obligatoire. Nous aurons ainsi dans la package validator les differentes tables. Comme exemple, nous aurons CategorieValidator.java: """package com.loic.gestiondestock.validator;
+
+import com.loic.gestiondestock.dto.CategorieDto;
+import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CategorieValidator {
+
+    public static List<String> validate(CategorieDto categorieDto){
+        List<String> errors = new ArrayList<>();
+
+        if (categorieDto == null || !StringUtils.hasLength(categorieDto.getCode())) {
+            errors.add("Veillez renseigner le code de la categorie");
+        }
+        return errors;
+    }
+}"""; UtilisateurValidator.java: """package com.loic.gestiondestock.validator;
+
+import ch.qos.logback.core.util.StringUtil;
+import com.loic.gestiondestock.dto.CategorieDto;
+import com.loic.gestiondestock.dto.UtilisateurDto;
+import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class UtilisateurValidator {
+
+    public static List<String> validate(UtilisateurDto utilisateurDto){
+        List<String> errors = new ArrayList<>();
+
+        if (utilisateurDto == null){
+            errors.add("Veillez renseigner le nom d'utilisateur");
+            errors.add("Veillez renseigner le prenom d'utilisateur");
+            errors.add("Veillez renseigner l'email de d'utilisateur");
+            errors.add("Veillez renseigner le mot de passe de l'utilisateur");
+            errors.add("Veillez renseigner la date de naissance de d'utilisateur");
+            errors.add("Veillez renseigner l'adresse d'utilisateur");
+            return errors;
+        }
+
+        if (!StringUtils.hasLength(utilisateurDto.getNom())) {
+            errors.add("Veillez renseigner le nom d'utilisateur");
+        }
+        if (!StringUtils.hasLength(utilisateurDto.getPrenom())) {
+            errors.add("Veillez renseigner le prenom d'utilisateur");
+        }
+        if (!StringUtils.hasLength(utilisateurDto.getEmail())) {
+            errors.add("Veillez renseigner l'email de d'utilisateur");
+        }
+        if (!StringUtils.hasLength(utilisateurDto.getMotDePasse())) {
+            errors.add("Veillez renseigner le mot de passe de l'utilisateur");
+        }
+
+        if (utilisateurDto.getDateDeNaissance() == null) {
+            errors.add("Veillez renseigner la date de naissance de d'utilisateur");
+        }
+        if (utilisateurDto.getAdresse() == null) {
+            errors.add("Veillez renseigner l'adresse d'utilisateur");
+        }else {
+            if (!StringUtils.hasLength(utilisateurDto.getAdresse().getAdresse1())) {
+                errors.add("Le champs 'Adresse 1' est obligatoir");
+            }
+            if (!StringUtils.hasLength(utilisateurDto.getAdresse().getVille())) {
+                errors.add("Le champs 'Ville' est obligatoir");
+            }
+            if (!StringUtils.hasLength(utilisateurDto.getAdresse().getCodePostal())) {
+                errors.add("Le champs 'Code postale' est obligatoir");
+            }
+            if (!StringUtils.hasLength(utilisateurDto.getAdresse().getPays())) {
+                errors.add("Le champs 'Pays' est obligatoir");
+            }
+        }
+
+        return errors;
+    }
+}
+""" et bien d'autres. 
+NB: 
+- Si dans une classe Dto on a un attribut ' private String code;', sa condition de  validation dans validator sera sous la forme:''if (categorieDto == null || !StringUtils.hasLength(categorieDto.getCode())) {
+            errors.add("Veillez renseigner le code de la categorie");
+        }'' .
+- Si dans une classe Dto on a un attribut ' private AdresseDto adresse; et/ou private Instant dateDeNaissance; et/ou  private BigDecimal quantite; et/ou
+    private TypeMvtStk typeMvt;, ...', sa condition de  validation dans validator sera sous la forme:'' if (utilisateurDto.getDateDeNaissance() == null) {
+            errors.add("Veillez renseigner la date de naissance de d'utilisateur");
+        }'' .
+- Dans notre cas, la classe Adresse.java est une classe qui est utilisée dans plusieurs autre classe juste en l'appellant. Ainsi, il n'y a pas de Validator pour cette classe et mais on peut voir comment l'appeler par exemple dans la classe 'UtilisateurValidator'. 
+
+
+8: Création du package exception: Ce sont des exceptions personnalisées qui permettent de renvoyer un message précis en cas d'erreur. ça permet de clarifier c'est quoi exactement le soucis. 
+	- Création d'un Enum qui contiendra nos codes d'erreur:
+	Ex: """ ARTICLE_NOT_FOUND("ARTICLE_NOT_FOUND"),
+		 private final String code;
+
+    private ErrorCodes(String code) {    
+        this.code = code;
+    }
+
+    public String getCode() {
+        return code;
+    } """
+	- Création d'une exception générique:"EntityNotFoundException"; si on veux chercher un article par son code et qu'on ne le trouve pas, il faut renvoyer une exception de type EntityNoutFoundException: """package com.loic.gestiondestock.exception;
+
+public class EntityNotFoundException extends RuntimeException {
+
+    private ErrorCodes errorCode;
+
+    public EntityNotFoundException(String message) {
+        super(message);
+    }
+
+    public EntityNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public EntityNotFoundException(String message,Throwable cause, ErrorCodes errorCode) {
+        super(message, cause);
+        this.errorCode = errorCode;
+    }
+
+    public EntityNotFoundException(String message, ErrorCodes errorCode) {
+        super(message);
+        this.errorCode = errorCode;
+    }
+
+}
+"""
+	- Création d'une exception invalid, InvalidEntityException: Lorsque l'on essaie d'enregistrer ou de mettre à jour quelque chose qui n'est pas valide dans la BDD, ce type  d'exception est appelé:"""package com.loic.gestiondestock.exception;
+
+import java.util.List;
+
+public class InvalidEntityException extends RuntimeException {
+
+    private ErrorCodes errorCode;
+    private List<String> errors;
+
+    public InvalidEntityException(String message) {
+        super(message);
+    }
+
+    public InvalidEntityException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public InvalidEntityException(String message,Throwable cause, ErrorCodes errorCode) {
+        super(message, cause);
+        this.errorCode = errorCode;
+    }
+
+    public InvalidEntityException(String message, ErrorCodes errorCode, List<String> errors) {
+        super(message);
+        this.errorCode = errorCode;
+        this.errors = errors; 
+    }
+
+}
+""".
+
+
+9: Création du package repository: If faut creer une interface repository pour chaque entité et l'etentendre à JpaRepository car cette derniere possède des methodes pour faire du mapping(ex: //si on veut chercher un article par son code
+ Article findByCodeArticle(String codeArticle);)
+
+10: Création du package 'handlers';C'est une exception Globale: C'est un listener qui va écouter l'application et à chaque fois qu'une exception se leve dans l'application, il va l'intercepter et on peut ajouter le traitement qu'on veut faire.
+	- Création de la classe ErrorDto: c'est l'objet à renvoyer lorsqu'on trouve (catch) une exception.  
+	- Création de la classe RestExceptionHandler: Ici,on définit les types d'exception à intercepter et comment les afficher. On ne doit pas donner la chance à l'application de lever l'exception elle meme afin d'éviter les pointeurs nulls et toutes autres exceptions. 
+
+
+11: Création du package service:
+	METHODE 1: 
+	- On crée une interface et on défini les methodes qu'on veut 	utiliser: """public interface ArticleService {
+
+    ArticleDto save(ArticleDto articleDto);
+
+    ArticleDto findById(Integer id);
+
+    ArticleDto findByCodeArticle(String codeArticle);
+
+    List<ArticleDto> findAll();
+
+    void delete(Integer id);
+
+    ArticleDto update(ArticleDto articleDto);
+
+}
+""".
+	- On implemente cette interface dans une classe: """@Service
+public class ArticleServiceImpl implements ArticleService {
+    @Override
+    public ArticleDto save(ArticleDto articleDto) {
+        return null;
+    }
+
+    @Override
+    public ArticleDto findById(Integer id) {
+        return null;
+    }
+
+    @Override
+    public ArticleDto findByCodeArticle(String codeArticle) {
+        return null;
+    }
+
+    @Override
+    public List<ArticleDto> findAll() {
+        return List.of();
+    }
+
+    @Override
+    public void delete(Integer id) {
+
+    }
+
+    @Override
+    public ArticleDto update(ArticleDto articleDto) {
+        return null;
+    }
+}""".
+	METHODE 2: 
+	- On ne crée pas d'interface mais on crée directement des methodes à l'interieur du service: Ex d'interface: """public interface ArticleService {
+
+    ArticleDto save(ArticleDto articleDto);
+
+    ArticleDto findById(Integer id);
+
+    ArticleDto findByCodeArticle(String codeArticle);
+
+    List<ArticleDto> findAll();
+
+    void delete(Integer id);
+
+    ArticleDto update(ArticleDto articleDto);
+
+}""". Ici, on défini les methodes qui doivent etre implementées dans notre classe service: """package com.loic.gestiondestock.service.impl;
+
+import com.loic.gestiondestock.dto.ArticleDto;
+import exception.com.team48.gestiondestock.EntityNotFoundException;
+import exception.com.team48.gestiondestock.ErrorCodes;
+import exception.com.team48.gestiondestock.InvalidEntityException;
+import model.com.team48.gestiondestock.Article;
+import repository.com.team48.gestiondestock.ArticleRepository;
+import service.com.team48.gestiondestock.ArticleService;
+import validator.com.team48.gestiondestock.ArticleValidator;
+import io.micrometer.common.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Service //Indique que cette classe est un service
+@Slf4j // permet de faire des logs
+public class ArticleServiceImpl implements ArticleService {
+
+    //injection de l'article Repository par constructor
+    private ArticleRepository articleRepository;
+    @Autowired
+    public ArticleServiceImpl(ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
+    }
+
+
+    @Override
+    public ArticleDto save(ArticleDto articleDto) {
+        List<String> errors = ArticleValidator.validate(articleDto);
+        //Verifiert si l'article est valide avant de l'enregistrer dans la BDD
+        if (errors.isEmpty()) {
+            log.error("Article is not valid", articleDto);
+            throw new InvalidEntityException("L'article n'est pas Valide", ErrorCodes.ARTICLE_NOT_VALID, errors);
+        }
+        //Enregistrement de l'article
+        return ArticleDto.fromEntity(
+                articleRepository.save(
+                        ArticleDto.toEntity(articleDto)));
+    }
+
+    //methode pour trouver un article par son id
+    @Override
+    public ArticleDto findById(Integer id) {
+        if(id == null) {
+            log.error("Article ID is null");
+            return null;
+        }
+        Optional<Article> article = articleRepository.findById(id);
+
+        return Optional.of(ArticleDto.fromEntity(article.get())).orElseThrow(() ->
+                new EntityNotFoundException(
+                        "Aucun article avec l'ID " + id + " n'a ete trouve dans la BDD",
+                        ErrorCodes.ARTICLE_NOT_FOUND
+                )
+        );
+    }
+
+
+    //methode pour trouver un article par son code
+    @Override
+    public ArticleDto findByCodeArticle(String codeArticle) {
+        if(!StringUtils.isBlank(codeArticle)) {
+            log.error("Article CODE is null");
+            return null;
+        }
+        Optional<Article> article = articleRepository.findArticleByCodeArticle(codeArticle);
+
+        return Optional.of(ArticleDto.fromEntity(article.get())).orElseThrow(() ->
+                new EntityNotFoundException(
+                        "Aucun article avec le CODE " + codeArticle + " n'a ete trouve dans la BDD",
+                        ErrorCodes.ARTICLE_NOT_FOUND
+                )
+        );
+    }
+
+    //methode pour trouver tous les articles
+    @Override
+    public List<ArticleDto> findAll() {
+        return articleRepository.findAll().stream()
+                .map(ArticleDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    //methode pour supprimer un article
+    @Override
+    public void delete(Integer id) {
+        if (id == null) {
+            log.error("Article ID is null");
+
+            return;
+        }
+        articleRepository.deleteById(id);
+    }
+
+
+    //Ajout: methode pour mettre a jour un article
+    @Override
+    public ArticleDto update(ArticleDto articleDto) {
+        if (articleDto == null || articleDto.getId() == null) {
+            log.error("Article or Article ID is null");
+            throw new InvalidEntityException("L'article est null", ErrorCodes.ARTICLE_NOT_VALID, Collections.emptyList());
+        }
+
+        List<String> errors = ArticleValidator.validate(articleDto);
+        if (!errors.isEmpty()) {
+            log.error("Article is not valid: {}", articleDto);
+            throw new InvalidEntityException("L'article n'est pas valide", ErrorCodes.ARTICLE_NOT_VALID, errors);
+        }
+
+        Optional<Article> existingArticle = articleRepository.findById(articleDto.getId());
+        if (existingArticle.isEmpty()) {
+            log.error("Article with ID {} not found", articleDto.getId());
+            throw new EntityNotFoundException("Aucun article avec l'ID " + articleDto.getId() + " n'a ete trouve dans la BDD", ErrorCodes.ARTICLE_NOT_FOUND);
+        }
+
+        Article updatedArticle = ArticleDto.toEntity(articleDto);
+        updatedArticle.setId(existingArticle.get().getId()); // Ensure ID consistency
+        Article savedArticle = articleRepository.save(updatedArticle);
+
+        return ArticleDto.fromEntity(savedArticle);
+
+    }
+}
+""". Cette dernière methode est la plus conseillée. 
+
+NB: Il existe trois types d'injection en springboot: 
+	 A- //field injection: injection par champs lorsqu'on utilise ou fait appel a l'objet articleService
+    private ArticleService articleService;
+
+   B-  //setter injection: Meme methode que pour la fied injection, mais en utilisant un getter.
+    public ArticleService setArticleService() {
+        return articleService;
+    }
+
+    c- //constructor injection: injection par constructeur; lors de la creation de la classe ArticleController, spring injecte automatiquemet toutes les dependances qui sont déclarées dans le constructeur
+    //On l'utilise parce que l'injection peut se faire meme dans les services.
+    @Autowired
+    public ArticleController(ArticleService articleService) {
+        this.articleService = articleService;
+    }
+=> Une bonne methode de codage consiste à deleguer tout ce qui est logique metiers au service afin de reduire au mieux le controller. 
+
+12: Création et implementation du service Minio pour le stockage des objets.
+
+13: Documentation swagger: (ajouter les deppendances, configurer et tester l'Api).
+	
+
