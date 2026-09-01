@@ -41,7 +41,7 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.7.3</version> <!-- ou dernière version stable -->
+			<version>42.7.11</version> <!-- ou dernière version stable -->
 		</dependency>
 
 
@@ -118,7 +118,7 @@
 		<dependency>
 			<groupId>io.minio</groupId>
 			<artifactId>minio</artifactId>
-			<version>8.5.9</version>
+			<version>8.6.0</version>
 		</dependency>
 		
 	</dependencies>
